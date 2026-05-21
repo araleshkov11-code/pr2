@@ -18,10 +18,10 @@ class suggesting_post (StatesGroup):
 @dp.message_handler(text = btn_suggest_post.text)
 async def suggest_post(message: Message):
     if users.chech_ban(message.from_user.id):
-        await message.answer("Отправьте пост, который вы хотите предложить, после чего нажмите 'Далее'", reply_markup=kbrd_stop_and_next)
+        await message.answer("📩Отправьте пост, после чего нажмите 'Далее'", reply_markup=kbrd_stop_and_next)
         await suggesting_post.get_post.set()
     else:
-        await message.answer("Извините, но вы забанены в этом боте навсегда")
+        await message.answer("Извините, вы забанены❌")
 
 @dp.message_handler(text = btn_stop.text, state = suggesting_post.all_states)
 async def suggest_post_stop(message: Message, state: FSMContext):
@@ -133,7 +133,7 @@ async def suggest_post_get_text(message: Message, state: FSMContext):
 
 @dp.message_handler(state = suggesting_post.get_post, text = btn_next.text)
 async def suggest_post_continue(message: Message, state: FSMContext):
-    await message.answer("Вы действительно хотите отправить этот пост?")
+    await message.answer("Вы действительно хотите отправить этот пост❓")
     await suggesting_post.next()
 
 @dp.message_handler(state = suggesting_post.inform_user, text = btn_next.text)
@@ -141,5 +141,5 @@ async def suggest_post_done(message: Message,state: FSMContext):
     async with state.proxy() as data:
         post_id = int(data["post_id"])
     await send_post_to_admins(post_id)
-    await message.answer(f"Ваш пост поступил, ожидайте решения админов о публикации\nID поста - {post_id}", reply_markup=kbrd_user_main)
+    await message.answer(f"Ваш пост отправлен✅\nID поста - {post_id}", reply_markup=kbrd_user_main)
     await state.finish()
