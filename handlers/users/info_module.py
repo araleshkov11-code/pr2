@@ -20,13 +20,9 @@ async def hello_message(message: Message):
 
 @dp.message_handler(text = btn_help.text)
 async def help_message(message: Message):
-    msg_text = "Добро пожаловать в бот-предложку\n" + \
-        "Чтобы предложить пост нажмите кнопку 'Предложить пост', после чего отправьте сформированный пост" + \
+    msg_text = "Добро пожаловать в бот-предложку👋\n" + \
+        "Чтобы предложить пост нажмите кнопку 'Предложить пост', после чего отправьте пост💌" + \
         "После отправки он будет добавлен в предложенные посты, после чего администраторы его примут, либо отклонят" + \
-        "После принятия (отклонения) вам будет прислано уведомление, какой пост был принят (отклонен)"
+        "После принятия (отклонения) вам будет прислано уведомление"
     await message.answer(msg_text)
 
-@dp.message_handler(text = btn_about_bot.text)
-async def about_message(message: Message):
-    msg_text = "Бот написан @Knotoni\n"
-    await message.answer(msg_text)
