@@ -48,8 +48,8 @@ async def create_media_group(post_id: int, type: str):
 async def send_post_to_admins(post_id: int):
     admin_list = admins.get_all()
     for i in admin_list:
-        btn_accept_post = InlineKeyboardButton("Принять", callback_data=post_actions.new(action = "accept", post_id = post_id))
-        btn_decline_post = InlineKeyboardButton("Отклонить", callback_data=post_actions.new(action = "decline", post_id = post_id))
+        btn_accept_post = InlineKeyboardButton("✅", callback_data=post_actions.new(action = "accept", post_id = post_id))
+        btn_decline_post = InlineKeyboardButton("❌", callback_data=post_actions.new(action = "decline", post_id = post_id))
         kbrd_post_action = InlineKeyboardMarkup(row_width=2).add(btn_accept_post, btn_decline_post)
         post_files = files.get_post(post_id)
         post = posts.get(post_id)
@@ -87,7 +87,7 @@ async def accept_post(query: CallbackQuery, callback_data: dict):
         for i in admin_list:
             msg_id = post_state.get(post_id, i[0])
             await bot.edit_message_text(f"Пост принял(а) {accept_admin}", i[1], msg_id)
-        await bot.send_message(user_tg_id, f"Вас пост приняли!\nID поста - {post_id}")
+        await bot.send_message(user_tg_id, f"Ваш пост принят!✅\nID поста - {post_id}")
         post_state.delete(post_id)
         posts.delete(post_id)
         files.delete_post(post_id)
@@ -105,7 +105,7 @@ async def decline_post(query: CallbackQuery, callback_data: dict):
         for i in admin_list:
             msg_id = post_state.get(post_id, i[0])
             await bot.edit_message_text(f"Пост отклонил(а) {accept_admin}", i[1], msg_id)
-        await bot.send_message(user_tg_id, f"Вас пост отклонили!\nID поста - {post_id}")
+        await bot.send_message(user_tg_id, f"Ваш пост отклонен❌!\nID поста - {post_id}")
         post_state.delete(post_id)
         posts.delete(post_id)
         files.delete_post(post_id)
