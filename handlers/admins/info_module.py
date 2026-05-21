@@ -25,7 +25,7 @@ class unbanning_user(StatesGroup):
 @dp.message_handler(commands = ["admin"])
 async def show_admin_panel(message: Message):
     if admins.check(message.from_user.id):
-        await message.answer("Добро пожаловать в панель администратора", reply_markup=kbrd_admin_main)
+        await message.answer("Добро пожаловать в панель администратора👨‍💻", reply_markup=kbrd_admin_main)
 
 @dp.message_handler(text = btn_admin_list.text)
 async def show_admin_list(message: Message):
@@ -47,10 +47,10 @@ async def ban_user_complete(message: Message, state: FSMContext):
     try:
         user = await bot.get_chat(message.text)
         users.ban(user.id)
-        await message.answer(f"Пользователь {user.full_name} забанен", reply_markup = kbrd_admin_main)
+        await message.answer(f"Пользователь {user.full_name} забанен❌", reply_markup = kbrd_admin_main)
         await state.finish()
     except:
-        await message.answer("Ошибка! Проверьте правильность вводимого ID")
+        await message.answer("Ошибка! Проверьте правильность вводимого ID❌")
 
 @dp.message_handler(state = banning_user.get_tg_id, text = btn_stop.text)
 async def ban_user_break(message: Message, state: FSMContext):
@@ -60,7 +60,7 @@ async def ban_user_break(message: Message, state: FSMContext):
 @dp.message_handler(text = btn_unban_user.text)
 async def unban_user(message: Message):
     if admins.check(message.from_user.id):
-        await message.answer("Введите Telegram ID пользователя, которого хотите разбанить", reply_markup = kbrd_stop_action)
+        await message.answer("Введите Telegram ID пользователя, которого хотите разбанить✅", reply_markup = kbrd_stop_action)
         await unbanning_user.get_tg_id.set()
 
 @dp.message_handler(state = unbanning_user.get_tg_id)
@@ -68,10 +68,10 @@ async def unban_user_complete(message: Message, state: FSMContext):
     try:
         user = await bot.get_chat(message.text)
         users.unban(user.id)
-        await message.answer(f"Пользователь {user.full_name} разбанен", reply_markup = kbrd_admin_main)
+        await message.answer(f"Пользователь {user.full_name} разбанен✅", reply_markup = kbrd_admin_main)
         await state.finish()
     except:
-        await message.answer("Ошибка! Проверьте правильность вводимого ID")
+        await message.answer("Ошибка! Проверьте правильность вводимого ID❌")
 
 @dp.message_handler(state = unbanning_user.get_tg_id, text = btn_stop.text)
 async def unban_user_break(message: Message, state: FSMContext):
@@ -82,7 +82,7 @@ async def unban_user_break(message: Message, state: FSMContext):
 async def add_admin(message: Message):
     if admins.check(message.from_user.id):
         await message.answer("Введите Telegram ID администратора, которого хотите добавить " + \
-            "(добавляемый администратор должен запустить бота хотя бы один раз)", reply_markup = kbrd_stop_action)
+            "(добавляемый администратор должен запустить бота хотя бы один раз)👨‍💻", reply_markup = kbrd_stop_action)
         await adding_admin.get_tg_id.set()
 
 @dp.message_handler(state = adding_admin.all_states, text = btn_stop.text)
@@ -98,7 +98,7 @@ async def add_admin_get_id(message: Message, state: FSMContext):
         await message.answer("Введите ник администратора")
         await adding_admin.next()
     except:
-        await message.answer("Ошибка! Проверьте правильность вводимого ID")
+        await message.answer("Ошибка! Проверьте правильность вводимого ID❌")
 
 @dp.message_handler(state = adding_admin.get_nick, content_types = ContentType.TEXT)
 async def add_admin_done(message: Message, state: FSMContext):
@@ -106,13 +106,13 @@ async def add_admin_done(message: Message, state: FSMContext):
         tg_id = data["tg_id"]
     admins.add(tg_id, message.text)
     user = await bot.get_chat(tg_id)
-    await message.answer(f"Администратор {user.full_name} добавлен", reply_markup = kbrd_admin_main)
+    await message.answer(f"Администратор {user.full_name} добавлен✅", reply_markup = kbrd_admin_main)
     await state.finish()
 
 @dp.message_handler(text = btn_del_admin.text)
 async def del_admin(message: Message):
     if admins.check(message.from_user.id):
-        await message.answer("Введите Telegram ID администратора, которого хотите удалить", reply_markup = kbrd_stop_action)
+        await message.answer("Введите Telegram ID администратора, которого хотите удалить❌", reply_markup = kbrd_stop_action)
         await deleting_admin.get_tg_id.set()
 
 @dp.message_handler(state = deleting_admin.get_tg_id)
@@ -120,10 +120,10 @@ async def del_admin_complete(message: Message, state: FSMContext):
     try:
         user = await bot.get_chat(message.text)
         admins.delete(user.id)
-        await message.answer(f"Администратор {user.full_name} удален", reply_markup = kbrd_admin_main)
+        await message.answer(f"Администратор {user.full_name} удален❌", reply_markup = kbrd_admin_main)
         await state.finish()
     except:
-        await message.answer("Ошибка! Проверьте правильность вводимого ID")
+        await message.answer("Ошибка! Проверьте правильность вводимого ID❌")
 
 @dp.message_handler(state = deleting_admin.get_tg_id, text = btn_stop.text)
 async def del_admin_break(message: Message, state: FSMContext):
